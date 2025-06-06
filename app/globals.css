@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@keyframes pulseGlowMulti {
+  0% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+  }
+  25% {
+    box-shadow: 0 0 35px rgba(255, 0, 0, 0.7); /* Red */
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 255, 0, 0.7); /* Green */
+  }
+  75% {
+    box-shadow: 0 0 45px rgba(0, 140, 255, 0.7); /* Blue */
+  }
+  100% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7); /* Back to gold */
+  }
+}
+
+.pulse-glow-multi {
+  animation: pulseGlowMulti 2.5s ease-in-out infinite;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
