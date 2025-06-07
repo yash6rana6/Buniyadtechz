@@ -15,29 +15,19 @@ const RecentProjects = () => {
       <div className="flex flex-wrap items-center justify-center gap-16 mt-16">
         {projects.map((item) => (
           <div
-            className="lg:min-h-[32.5rem] h-[25rem] flex items-center justify-center sm:w-96 w-[80vw]"
+            className="lg:min-h-[32.5rem] h-[28rem] flex items-center justify-center sm:w-96 w-[80vw]"
             key={item.id}
           >
             <PinContainer
-              title={item.url || "/project"}
+              title={item.link || "/project"}
               href={item.link || "#"}
             >
               {/* Card Image Block */}
-              <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10">
-                <div
-                  className="relative w-full h-full overflow-hidden rounded-3xl shadow-xl"
-                  style={{ backgroundColor: "#13162D" }}
-                >
-                  <img
-                    src="/bg.png"
-                    alt="bgimg"
-                    className="absolute inset-0 object-cover w-full h-full opacity-10"
-                  />
-                </div>
+              <div className="relative sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10 rounded-3xl shadow-xl">
                 <img
                   src={item.img}
                   alt="cover"
-                  className="z-10 absolute bottom-0 w-[80%] object-contain"
+                  className="w-full h-full object-cover"
                 />
               </div>
 
@@ -68,10 +58,15 @@ const RecentProjects = () => {
                 </div>
 
                 {/* Visit Link */}
-                <div className="flex items-center text-purple-400 hover:text-purple-300 transition-colors cursor-pointer">
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-purple-400 hover:text-purple-300 transition-colors cursor-pointer"
+                >
                   <p className="text-sm md:text-base font-medium">Check Live Site</p>
                   <FaLocationArrow className="ms-2" />
-                </div>
+                </a>
               </div>
             </PinContainer>
           </div>
