@@ -7,6 +7,12 @@ import { Menu, X } from "lucide-react";
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("/");
+  const [mounted, setMounted] = useState(false);
+
+  // Handle hydration
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Close mobile menu when clicking outside or on escape
   useEffect(() => {
@@ -20,7 +26,7 @@ const Navbar = () => {
       }
     };
 
-    if (menuOpen) {
+    if (menuOpen && mounted) {
       document.addEventListener("keydown", handleEscape);
       document.addEventListener("click", handleClickOutside);
     }
@@ -29,7 +35,7 @@ const Navbar = () => {
       document.removeEventListener("keydown", handleEscape);
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [menuOpen]);
+  }, [menuOpen, mounted]);
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -45,33 +51,79 @@ const Navbar = () => {
     setMenuOpen(false);
   };
 
+  // Prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <nav
+        className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100]
+        bg-neutral-900/60 backdrop-blur-md text-white 
+        px-4 md:px-10 py-3 rounded-full shadow-md md:shadow-lg border border-white/10 
+        w-[95%] md:w-[90%] max-w-6xl"
+      >
+        <div className="flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="relative overflow-hidden rounded-full">
+              <Image 
+                src="/Logo.png" 
+                width={32} 
+                height={32} 
+                alt="Buniyad Techz Logo"
+                className="md:w-10 md:h-10"
+                priority
+              />
+            </div>
+            <span className="text-[#FFD700] text-lg md:text-xl font-semibold">
+              Buniyad Techz
+            </span>
+          </Link>
+          <ul className="hidden md:flex gap-6 lg:gap-8 text-sm md:text-base font-medium">
+            {navItems.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="hover:text-yellow-400">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <button
+            className="md:hidden text-yellow-400 p-2 rounded-full"
+            aria-label="Open menu"
+          >
+            <Menu size={24} />
+          </button>
+        </div>
+      </nav>
+    );
+  }
+
   return (
-    <nav
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-[9999]
-      bg-neutral-900/60 backdrop-blur-md text-white 
-      px-10 py-3 rounded-full shadow-lg border border-white/10 
-      w-[90%] max-w-6xl transition-all duration-300 hover:bg-neutral-900/70"
-    >
+    <>
+      <nav
+        className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[100]
+        bg-neutral-900/60 backdrop-blur-md text-white 
+        px-4 md:px-10 py-3 rounded-full shadow-md md:shadow-lg border border-white/10 
+        w-[95%] md:w-[90%] max-w-6xl transition-all duration-300 hover:bg-neutral-900/70"
+      >
       <div className="flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative overflow-hidden rounded-full">
             <Image 
               src="/Logo.png" 
-              width={40} 
-              height={40} 
+              width={32} 
+              height={32} 
               alt="Buniyad Techz Logo"
-              className="transition-transform duration-300 group-hover:scale-110"
+              className="md:w-10 md:h-10 transition-transform duration-300 group-hover:scale-110"
               priority
             />
           </div>
-          <span className="text-[#FFD700] text-xl font-semibold transition-colors duration-300 group-hover:text-yellow-300">
+          <span className="text-[#FFD700] text-lg md:text-xl font-semibold transition-colors duration-300 group-hover:text-yellow-300">
             Buniyad Techz
           </span>
         </Link>
 
         {/* Desktop Links */}
-        <ul className="hidden md:flex gap-8 text-base font-medium">
+        <ul className="hidden md:flex gap-6 lg:gap-8 text-sm md:text-base font-medium">
           {navItems.map((item) => (
             <li key={item.href}>
               <Link
@@ -103,17 +155,17 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          menuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+        className={`md:hidden absolute top-full left-0 right-0 mt-2 mx-2 bg-neutral-900/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-xl transition-all duration-300 ease-in-out ${
+          menuOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-4"
         }`}
       >
-        <ul className="flex flex-col gap-4 mt-4 px-2 pb-2 text-base">
+        <ul className="flex flex-col p-4 space-y-2">
           {navItems.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className={`block py-2 px-3 rounded-lg transition-all duration-300 hover:bg-white/10 hover:text-yellow-400 ${
+                className={`block py-3 px-4 rounded-xl transition-all duration-300 hover:bg-white/10 hover:text-yellow-400 ${
                   activeSection === item.href ? "text-yellow-400 bg-white/5" : ""
                 }`}
               >
@@ -123,7 +175,16 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-    </nav>
+      </nav>
+      
+      {/* Mobile Menu Overlay */}
+      {menuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[90] md:hidden"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+    </>
   );
 };
 
