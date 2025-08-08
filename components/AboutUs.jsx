@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { FaBullseye, FaRocket, FaMagic } from "react-icons/fa";
+import Link from "next/link";
 
 const AboutUs = () => {
   return (
@@ -67,9 +68,11 @@ const AboutUs = () => {
       >
         <h2 className="text-3xl font-bold mb-4 text-white">Wanna build something epic?</h2>
         <p className="text-gray-400 mb-6">Let’s connect & bring your vision to life.</p>
+       <Link href="#contact">
         <button className="bg-gradient-to-r from-pink-500 to-purple-600 px-6 py-3 rounded-full text-white font-semibold shadow-lg hover:scale-105 transition">
           Contact Us
         </button>
+       </Link>
       </motion.div>
 
       {/* Floating Glow Background */}

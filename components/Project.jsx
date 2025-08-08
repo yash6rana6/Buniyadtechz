@@ -57,16 +57,14 @@ const RecentProjects = () => {
                   ))}
                 </div>
 
-                {/* Visit Link */}
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {/* Visit Link - converted to button */}
+                <button
+                  onClick={() => window.open(item.link, "_blank")}
                   className="flex items-center text-purple-400 hover:text-purple-300 transition-colors cursor-pointer"
                 >
                   <p className="text-sm md:text-base font-medium">Check Live Site</p>
                   <FaLocationArrow className="ms-2" />
-                </a>
+                </button>
               </div>
             </PinContainer>
           </div>
@@ -77,3 +75,4 @@ const RecentProjects = () => {
 };
 
 export default RecentProjects;
+
