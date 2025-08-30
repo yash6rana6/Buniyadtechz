@@ -1,28 +1,9 @@
-import React from "react";
+"use client";
 
-const blogs = [
-  {
-    id: 1,
-    title: "Top 5 Web Development Trends in 2025",
-    description: "Explore the cutting-edge technologies shaping the future of web development...",
-    author: "Buniyad Techz",
-    date: "Aug 1, 2025",
-  },
-  {
-    id: 2,
-    title: "Why Every Business Needs a Website in 2025",
-    description: "A solid online presence is no longer optional. Discover the top reasons businesses go digital...",
-    author: "Buniyad Team",
-    date: "July 24, 2025",
-  },
-  {
-    id: 3,
-    title: "How to Choose the Right Tech Stack",
-    description: "Choosing the right technology stack can make or break your project. Here's how we do it at Buniyad Techz...",
-    author: "Tech Team",
-    date: "July 15, 2025",
-  },
-];
+import React from "react";
+import blogs from "../lib/blog";
+import Link from "next/link";
+import Image from "next/image";
 
 const BlogSection = () => {
   return (
@@ -32,7 +13,8 @@ const BlogSection = () => {
           Latest Insights
         </h2>
         <h3 className="text-xl md:text-2xl font-medium mb-12 text-yellow-100">
-          From the Minds of <span className="font-semibold text-yellow-400">Buniyad Techz</span>
+          From the Minds of{" "}
+          <span className="font-semibold text-yellow-400">Buniyad Techz</span>
         </h3>
 
         <div className="grid gap-10 md:grid-cols-3">
@@ -41,16 +23,47 @@ const BlogSection = () => {
               key={blog.id}
               className="bg-white/5 backdrop-blur-md border border-yellow-500/10 rounded-2xl p-6 text-left shadow-lg hover:shadow-yellow-400/20 transition duration-300"
             >
-              <h4 className="text-xl font-semibold text-yellow-300 mb-2">{blog.title}</h4>
-              <p className="text-gray-300 text-sm mb-4">{blog.description}</p>
+              {/* Thumbnail with Next Image */}
+              <div className="relative w-full h-40 mb-4">
+                <Image
+                  src={blog.thumbnail}
+                  alt={blog.title}
+                  fill
+                  className="object-cover rounded-xl"
+                />
+              </div>
+
+      
+              <h4 className="text-xl font-semibold text-yellow-300 mb-2">
+                {blog.title}
+              </h4>
+
+              
+              <p className="text-gray-300 text-sm mb-4">{blog.shortDesc}</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {blog.tags.map((tag, i) => (
+                  <span
+                    key={i}
+                    className="text-xs bg-yellow-500/10 text-yellow-300 px-2 py-1 rounded-full"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Date */}
               <div className="flex justify-between items-center text-sm text-yellow-100">
-                <span>{blog.author}</span>
                 <span>{blog.date}</span>
               </div>
+
+              {/* Read More */}
               <div className="mt-4">
-                <button className="text-sm text-yellow-400 hover:text-yellow-300 underline underline-offset-4 transition">
+                <Link
+                  href={`/blogs/${blog.id}`}
+                  className="text-sm text-yellow-400 hover:text-yellow-300 underline underline-offset-4 transition"
+                >
                   Read more →
-                </button>
+                </Link>
               </div>
             </div>
           ))}
