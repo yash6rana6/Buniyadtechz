@@ -1,9 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-  turbo: true,
-},
+  turbopack: {},
 
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
+  },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
